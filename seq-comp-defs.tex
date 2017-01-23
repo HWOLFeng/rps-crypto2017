@@ -52,7 +52,7 @@ then $(P,V)$ is $(KR\epsilon, K)$-sequentially composable for $\cal D$.
 \subsection{A weaker form of sequential composability}
 
 
-The definition of sequential composability presented above aims at modeling a prover that works under \emph{a constrained budget}. In this case we want to ensure that acting as the honest prover would be the most profitable strategy.
+The definition of sequential composability presented above aims at modeling a prover that works under \emph{a constrained budget}. In this case we want to ensure that allocating a certain computational investment "as the honest prover would" is the most profitable strategy.
 In other scenarios, however, we may assume the prover having an \emph{unlimited budget}. For example, in the case of volunteering computation we each volunteering client's cost can be expressed by time/electricity with no "cap". Such a client would be looking for the most efficient way to use its resources for \emph{each delegated problem}, rather than for each allocation of the honest cost $C$.
 To model this scenario we can consider a simpler definition of sequential composability where we require the honest prover to be maximizing not only reward but utility, defined as reward minus cost. 
 Such a definition would be a weaker form of sequential composability as defined above: Definition \ref{def:SRP} would imply the notion sketched here. In the remainder of this work we would focus only on the stronger definition of sequential composability for provers with budget constraints.

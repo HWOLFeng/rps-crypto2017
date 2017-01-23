@@ -29,16 +29,18 @@ follows:
     \begin{enumerate}
         \item $P$ sends intermediate configurations $C_{p}$ and $C_q$ (which may coincide) where $p = \lfloor \frac{l+m-1}{2} \rfloor$  and 
         $q = \lceil \frac{l+m-1}{2} \rceil$. % (m == r-l+1)
-        \item $V$ generates a random bit $b \in_R \bit$
+        \item If $p \neq q$, $V$ checks whether there is a transition leading from configuration $C_p$ to configuration $C_q$. If yes, $V$ accepts; otherwise $V$ halts and rejects.
+	\item $V$ generates a random bit $b \in_R \bit$
         \item If  $b = 0$ then the protocol continues invoking $\PathCheck(\lfloor \frac{m}{2} \rfloor, C_l, C_p)$; If $b = 1$ the protocol continues invoking $\PathCheck(\lfloor \frac{m}{2} \rfloor, C_q, C_r)$
     \end{enumerate}
-    \item If $m = 1$, then $V$ checks whether there is a transition leading from configuration $C_l$ to configuration $C_r$. If yes, $V$ accepts; otherwise $V$ rejects.
+    \item If $m = 1$, then $V$ checks whether there is a transition leading from configuration $C_l$ to configuration $C_r$. If $l=1$, $V$ checks that $C_l$ is indeed the initial configuration $C_1$. If $r=N$, $V$ checks that $C_r$ is indeed the final configuration sent by $P$ at the beginning. If yes, $V$ accepts; otherwise $V$ rejects.
 \end{itemize}
 \end{framed}
 
 \medskip
 
 \begin{theorem}
+\label{thm:main}
 $\NTISP[\poly(n), S(n)] \subseteq \DRMA[O(\log n), O(S(n)\log n), O(S(n)\log n)]$
 \end{theorem}
 \begin{proof}
@@ -49,7 +51,9 @@ Since the computation is in $\NTISP[\poly(n), S(n)]$, the configurations $P$ sen
 The verifier only needs to read the configurations and, at the last round, check the existence of a transition leading from $C_l$ to $C_r$. $V$ can carry out the latter test in $O(S(n) \log n)$ time.
 
 % Soundness
-Let us now prove that this is a rational proof with noticeable reward gap by showing the protocol satisfies the hypothesis of Lemma \ref{lemma:ip2rp}. Observe that the completeness of the protocol above is 1. 
+Let us now prove that this is a rational proof with noticeable reward gap.
+%by showing the protocol satisfies the hypothesis of Lemma \ref{lemma:ip2rp}. 
+Observe that the protool has perfect completeness. 
 Let us now prove that the soundness is at most $1 - 2^{-\log N} = 1 - \frac{1}{O(\poly(n))}$.
 We aim at proving that, if there is no path between the configurations $C_1$ and $C_N$ then $V$ rejects with probability at least $2^{-\log N}$.
 Assume, for sake of simplicity, that $N = 2^k$ for some $k$. We will proceed by induction on $k$. If $k=1$, $P$ provides the only intermediate configuration $C'$ between $C_1$ and $C_N$. At this point $V$ flips a coin and the protocol will terminate after testing whether there exists a transition between $C_1$ and $C'$ or between $C'$ and $C_N$. Since we assume the input is not in the language, there exists at most one of such transitions and $V$ will detect this with probability $1/2$.

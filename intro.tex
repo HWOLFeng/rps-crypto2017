@@ -2,28 +2,13 @@ The problem of efficiently checking the correctness of a computation performed b
 
 The rise of the {\em cloud computing} paradigm has refocused our community's research effort towards finding solutions that are efficient and feasible in practice. How do we check the integrity of data that is stored remotely? How do we check computations performed on this remotely stored data? How can a client do this in the most efficient way possible?
 
-Under the generic name of {\sf Verifiable Outsourced Computation} we have a very active research area in Cryptography and Network Security (see \cite{wb15} for a survey), to design protocols where it is impossible (under suitable cryptographic assumptions) for a provider to "cheat" in the above scenarios. While much progress has been done in this area, we are still far from solutions that can be deployed in practice. 
+{\sf Verifiable Outsourced Computation} is now a very active research area in Cryptography and Network Security (see \cite{wb15} for a survey), to design protocols where it is impossible (under suitable cryptographic assumptions) for a provider to "cheat" in the above scenarios. While much progress has been done in this area, we are still far from solutions that can be deployed in practice. 
 
 Part of the reason is that Cryptographers consider a very strong adversarial model that prevents {\sf any} adversary from cheating. A different approach is to restrict ourselves to {\em rational adversaries}, whose motivation is not just to disrupt the protocol or computation, but simply to maximize a well defined utility function (e.g. profit).
 
-\medskip
-\noindent
-{\sc Our Contribution:}
-This paper presents new protocols for the verification of {\em non-deterministic space-bounded polytime computations} against a rational adversary. More specifically consider a language $L \in \NTISP(T(n), S(n))$, i.e. recognized by a non-deterministic Turing Machine $M_L$ which runs in time $T(n)$ and space $S(n)$. 
-We construct a protocol where a rational prover can
-convince the verifier that $x \in L$ with the following properties: 
-\begin{itemize}
-\item The verifier runs in time $O(S(n) \log n)$
-\item The protocol has $O(\log n)$ rounds and communication complexity $O(S(n) \log n)$
-\item The prover simply runs $M_L(x)$ and stores all the intermediate configurations (i.e. requires space $O(S(n) T(n))$
-\end{itemize}
-Note that for polytime computations in sublinear space this gives a protocol in which the verifier is sublinear-time. 
+\subsection{Rational Proofs}
 
-\subsection{Relationship to Previous Work}
-\label{sec:prior}
-
-\noindent{{\sc Rational Proofs.}
-The notion of proof that we use in our work is the concept of {\sf Rational Proofs} introduced by Azar and Micali in \cite{am} and refined in subsequent papers \cite{am1,ratargs}. 
+In our work we use the concept of {\sf Rational Proofs} introduced by Azar and Micali in \cite{am} and refined in subsequent papers \cite{am1,ratargs}. 
 
 In a Rational Proof, given a function $f$ and an input $x$, the server returns the value $y=f(x)$, and (possibly) some auxiliary information, to the client. The client will in turn 
 pay the server for its work with a reward which is a function of the messages 
@@ -34,17 +19,67 @@ in maximizing his reward, will always answer correctly.
 
 The most striking feature of Rational Proofs is their simplicity. For example in \cite{am}, Azar and Micali show {\sf single-message} Rational Proofs for any problem in $\#P$, where an (exponential-time) prover convinces a (poly-time) verifier of the number of satisfying assignment of a Boolean formula. 
 
-For the case of "real-life" computations, Azar and Micali in \cite{am1} present $d$-round Rational Proofs for functions computed by (uniform) Boolean circuits of depth $d$, for $d=O(\log n)$. In this case the Verifier runs in logarithmic time.
+For the case of "real-life" computations, Azar and Micali in \cite{am1} consider the case of efficient provers (i.e. poly-time) and "super-efficient" (log-time) verifiers and present $d$-round Rational Proofs for functions computed by (uniform) Boolean circuits of depth $d$, for $d=O(\log n)$. 
+% In this case the Verifier runs in logarithmic time.
 
-Recent work \cite{ratsumchecks} shows how to obtain Rational Proofs with sublinear verifiers for languages in NC. Recalling that $\L \subseteq \NL \subseteq \NC_2$, one can use the protocol  in \cite{ratsumchecks} to verify a logspace polytime computation (deterministic or nondeterministic) in $O(\log^2 n )$ rounds and $O(\log^2 n )$ verification. For these computations our results compare
-favorably to the one in \cite{ratsumchecks} in at least one aspect: our protocol requires $O(\log n )$ rounds and has the same verification complexity.
+Recent work \cite{ratsumchecks} shows how to obtain Rational Proofs with sublinear verifiers for languages in NC. Recalling that $\L \subseteq \NL \subseteq \NC_2$, one can use the protocol  in \cite{ratsumchecks} to verify a logspace polytime computation (deterministic or nondeterministic) in $O(\log^2 n )$ rounds and $O(\log^2 n )$ verification.
 
-% Comparison between classes
-This paper extends the line of work on rational proofs for "real-life" computation classes. We introduce the first rational proof for $\SC$ (also known as $\DTISP(T(n), S(n))$) with polylogarithmic verification and logarithmic rounds. To compare this with the results in \cite{ratsumchecks}, notice it is believed that $\NC \not = \SC$ and that the two classes are actually incomparable (see \cite{SCcompleteness} for a discussion).
-Finally, our results provide the first efficient rational proof for the non-deterministic class $\NSC = \NTISP(\poly(n), \polylog(n) )$ . 
 
 \medskip
-\noindent{\sc Interactive Proofs.}
+\noindent
+{\sc Compositions of Rational Proofs.}
+In \cite{cg15} the authors present a critique of the rational proof model in the case of "repeated executions with a budget". This model arises in the context of "volunteer computations" (\cite{seti,folding}) where many computational tasks are outsourced and provers compete in solving as many as possible to obtain rewards. In this scenario assume that a prover has a certain budget $B$ of "computational effort": how can one  guarantee that the rational strategy is to provide the correct answer in {\em all} the proof he provides? The notion of rational proof guarantees that if the prover engages in a single rational proof then it is in his best interest to provide the correct output. But in \cite{cg15} the authors show that in the presence of many computations, it might be more profitable for the prover to use his budget $B$ to provide many incorrect answers than to provide a single correct answer. That's because incorrect (e.g. random) answers are "cheaper" to compute than the correct one and with the same budget $B$ the prover can provide many of them while the entire budget might be necessary to solve a single problem correctly. If the difference in reward between correct and incorrect answers is not high enough then many incorrect answers may be more profitable and a rational prover will choose that strategy, and indeed this is the case for many of the protocols in \cite{am,am1,ratargs,ratsumchecks}. 
+
+A stronger notion of {\em sequentially composable rational proofs} is put forward in \cite{cg15} which avoids the above problem and guarantees that the rational strategy is always the one to provide correct answers. Protocols satisfying this stronger notion are also presented for a subset of bounded-depth circuit computations. 
+
+\subsection{Our Contribution}
+
+This paper presents new protocols for the verification of {\em non-deterministic space-bounded polytime computations} against a rational adversary. More specifically consider a language $L \in \NTISP(T(n), S(n))$, i.e. recognized by a non-deterministic Turing Machine $M_L$ which runs in time $T(n)$ and space $S(n)$. 
+We construct a protocol where a rational prover can
+convince the verifier that $x \in L$ with the following properties: 
+\begin{itemize}
+\item The verifier runs in time $O(S(n) \log n)$
+\item The protocol has $O(\log n)$ rounds and communication complexity $O(S(n) \log n)$
+\item The prover simply runs $M_L(x)$ and stores all the intermediate configurations (i.e. requires space $O(S(n) T(n))$
+\end{itemize}
+Our protocol can be proven secure in {\bf both} the stand-alone model of \cite{am} and the sequentially composable definition of \cite{cg15}. 
+
+For the case of "real-life" computations (i.e. poly-time prover and poly-log verifier) we 
+note that for computations in sublinear space our general results yields a protocol in which the verifier is sublinear-time. More specifically, we introduce the first rational proof for $\SC$ (also known as $\DTISP(\poly(n), \polylog(n))$) with polylogarithmic verification and logarithmic rounds. Moreover, our results provide the first efficient rational proof for the non-deterministic class $\NSC = \NTISP(\poly(n), \polylog(n) )$ . 
+
+To compare this with the results in \cite{ratsumchecks}, we note that it is believed that $\NC \not = \SC$ and that the two classes are actually incomparable (see \cite{SCcompleteness} for a discussion).
+ For these computations our results compare
+favorably to the one in \cite{ratsumchecks} in at least one aspect: our protocol requires $O(\log n )$ rounds and has the same verification complexity.
+
+\subsection{The Landscape of Rational Proof Systems}
+
+Rational Proof systems can be divided in roughly two categories, both of them presented in the original work \cite{am}. 
+
+\medskip
+\noindent
+{\sc Scoring Rules.}
+The more "novel" approach in \cite{am} uses {\em scoring rules} to compute the reward paid by the verifier to the prover. A scoring rule is used to asses the "quality" of a prediction of a randomized process. Assume that the prover declares that a certain random variable $X$ follows a particular probability distribution $D$. The verifier runs an "experiment" (i.e. samples the random variable in question) and computes a "reward" based on the distribution $D$ announced by the prover and the result of the experiment. A scoring rule is maximized if the prover announced the real distribution followed by $X$. The novel aspect of many of the protocols in \cite{am} was how to cast the computation of $y=f(x)$ as the announcement of a certain distribution $D$ that could be tested efficiently by the verifier and rewarded by a scoring rule. 
+
+A simple example is the protocol for $\#P$ in \cite{am} (or its "scaled-down" version for threshold gates). Given a Boolean formula $\Phi(x_1,\ldots,x_n)$ the prover announces the number $m$ of satisfying assignments. This can be interpreted as the prover announcing that if one chooses an assignment at random it will be a satisfying one with probability $m \cdot 2^{-n}$. The verifier then chooses a random assignment and checks if it satisfies $\Phi$ or not and uses $m$ and the result of the test to compute the reward via a scoring rule. Since the scoring rule is maximized by the announcement of the correct $m$, a rational prover will announce the correct value. 
+
+As pointed out in \cite{cg15} the problem with the scoring rule approach is that the reward declines slowly as the distribution announced by the Prover becomes more and more distant from the real one. The consequence is that incorrect results still get a substantial reward, even if not a maximal one. Since those incorrect results can be computed faster than the correct one, a Prover with "budget" $B$ might be incentivized to produce many incorrect answers instead of a single correct one. All of the scoring rule based protocols in \cite{am,am1,ratargs,ratsumchecks} suffer from this problem. 
+
+\medskip
+\noindent
+{\sc Weak Interactive Proofs.}
+Rational proofs can also be achieved via "weak" interactive proofs, where the prover is caught cheating with non-negligible probability (this is basically the {\em covert adversary} model for multiparty computation introduced in \cite{AL10}.) Indeed for such proofs we can always pay a fixed reward $R$ to the prover unless we catch him cheating in which case we pay $0$. These are rational proofs since obviously the expected reward of the prover is maximized by the honest behavior. Some of the proofs in \cite{am} and the proofs in \cite{cg15} are weak interactive proofs. Those proofs also turn out to be secure in the sequential model of \cite{cg15} (under appropriate assumptions). The protocol in this work is also a weak interactive proof. 
+
+\medskip
+\noindent
+{\sc Comparison.}
+When it comes to sequentially composability the work in \cite{cg15} and this work seem to point out that scoring rule based protocols are inherently insecure and cannot be used. 
+
+But even if we consider the "stand-alone" model it is not clear which approach is more powerful. For every language class that admits a scoring rule based protocol we also have a weak interactive proof with similar performance metrics (i.e. number of rounds, verifier efficiency, etc.). Our result in this paper present the first example of a language class for which we have rational proofs based on weak interactive proofs but no example of a scoring rule based protocol exist. So our results seem to suggest that the weak interactive proof approach might be the more powerful technique. 
+
+\subsection{Other Related  Work}
+\label{sec:prior}
+
+{\sc Interactive Proofs.}
 Obviously a "traditional" interactive proof (where security holds against any adversary, even a computationally unbounded one) would work in our model. In this case the most relevant result is 
 the recent independent work in \cite{rrr16} that presents breakthrough protocols for the deterministic restriction of the class of language we consider. If $L$ is a language which is recognized by a deterministic Turing Machine $M_L$ which runs in time $T(n)$ and space $S(n)$, then their protocol has the following properties: 
 \begin{itemize}
@@ -57,10 +92,12 @@ Apart from round complexity (which is the impressive breakthrough of the result 
 \cite{rrr16}. On the other hand, we stress that our protocol only considers weaker rational adversaries. 
 
 \medskip
-\noindent{\sc Other Related Work.}
+\noindent{\sc Computational Arguments.}
 There is a large class of protocols for {\em arguments} of correctness (e.g. \cite{ggp10,ggpr13,krr14}) even in the rational model \cite{ratargs,ratsumchecks}. Recall that in an argument, security is achieved only against computationally bounded prover. In this case we can even achieve non-interactive solutions. But, in this paper, we are focused on what we can achieve without using computational assumptions.
 
-% Halpern and Pass
+\medskip
+\noindent
+{\sc Computational Decision Theory.}
 Other works in theoretical computer science have studied the connections between cost of computation and utility in decision problems.
 The work in \cite{halpern2011don} proposes a framework for \emph{computational decision problems}, where the Decision Maker's (DM) utility depends on the algorithm chosen for computing its strategy.
 The Decision Maker runs the algorithm, assumed to be a Turing Machine, on the input to the computational decision problem.
@@ -69,32 +106,7 @@ Thus the choice of the DM reduces to the choice of a Turing Machine from a certa
 Rational proofs with costly computation could be formalized in the language of \emph{computational decision problems} in \cite{halpern2011don}. There are similarities between the approach in this
 work and that in \cite{halpern2011don}, as both take into account the cost of computation in a decision problem.
 
-\begin{comment}
-The cost models presented in our work could be extended by considering different type of cost functions, such as the ones in \cite{halpern2011don}. For example, we assume a cost function that is linear in the number of steps (transitions) carried out. A different approach could consider non-linear cost functions. What assumptions would be required to prove sequential composability when the cost of the computation increases, say, quadratically in the number of steps? 
-And what are plausible cost functions in the real world?
-\end{comment}
 
 
 
 
-\subsection{Open Problems and Future Research}
-
-
-The problem of interactive proofs for any polynomial-time computable function with an efficient verifier (e.g. quasi-linear) remains still open. It would be nice to be able to construct such proofs even simply in the rational model. 
-
-\medskip
-\noindent
-In \cite{cg15} we presented a critique of the rational proof model in the case of "repeated executions with a budget". This model arises in the context of "volunteer computations" (\cite{seti,folding}) where many computational tasks are outsourced and provers compete in solving as many as possible to obtain rewards ). In this scenario assume that a prover has a certain budget $B$ of "computational effort": how can we guarantee that the rational strategy is to provide the correct answer in {\em all} the proof he provides? The notion of rational proof guarantees that if the prover engages in a single rational proof then it is in his best interest to provide the correct output. But in \cite{cg15} we showed that in the presence of many computations, it might be more profitable for the prover to use his budget $B$ to provide many incorrect answers than to provide a single correct answer. That's because incorrect (e.g. random) answers are "cheaper" to compute than the correct one and with the same budget $B$ the prover can provide many of them while the entire budget might be necessary to solve a single problem correctly. If the difference in reward between correct and incorrect answers is not high enough then many incorrect answers may be more profitable and a rational prover will choose that strategy. 
-
-% XXX: Argue more about this?
-The problem seems to be inherent in protocols based on scoring rules such as Brier's rule \cite{brier} (many, though not all, of the protocols in 
-\cite{am,am1,ratargs,ratsumchecks} are based on such scoring rules). 
-
-The protocol we present here can be thought of as an extension of the protocol in \cite{cg15}, which is based on a different approach. The Verifier does a limited check on the computation provided by the prover. This check is designed to be efficient (to keep the Verifier simple) and to catch a cheating prover with probability at least $1/{\sf poly}$. If the prover is not caught it gets a fixed reward $R$. This will guarantee that in the single-execution case the rational prover will always choose to provide correct answers and collect $R$ (since the cheating prover has expected reward at most $(1-1/{\sf poly})R$). 
-
-
-
-% Interactive proofs
-
-% XXX: From older version (TCC)
-As we discussed in \cite{cg15} this type of protocols has a better chance to be secure (against rational adversaries) even in the "repeated" case, provided certain conditions happen. An interesting line of research which we plan to explore is to determine under what circumstances our new protocol for space bounded computation can be proven secure in the repeated case. 
