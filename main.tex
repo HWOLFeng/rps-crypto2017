@@ -90,6 +90,8 @@ Note that for polytime computations in sublinear space this gives a protocol in 
 \section{Sequential Composability of our protocol}
 \input{proof-seq-comp.tex}
 
+\input{extras.tex}
+
 \section{Conclusions and Open Problems}
 We presented a rational proof for languages recognized by non-deterministic space-bounded computation. Our protocol is the first rational proof for a general class of language that does not use circuit representations. Our protocol is secure both in the standard stand-alone notion of rational proof introduced in 
 \cite{am} and in the stronger composable version presented in \cite{cg15}. 
@@ -100,9 +102,9 @@ Our work leaves open a series of questions
 
 \item Can we build efficient rational proofs for arbitrary poly-time computations, where the verifier runs in sub-linear, or even in linear, time? Even in the standalone model of \cite{am}?
 
-\item Our proof of sequential composability considers only non-adaptive adversaries, and enforces this condition by the use of timing assumptions. Is it possible to construct protocols that are secure against adaptive adversaries? Or is it possible to relax the timing assumption to something less stringent than what is required in our protocol?
+\item Our proof of sequential composability considers only non-adaptive adversaries, and enforces this condition by the use of timing assumptions. Is it possible to construct protocols that are secure against adaptive adversaries? \textbf{XXX: Deal with next sentences before submitting.} Or is it possible to relax the timing assumption to something less stringent than what is required in our protocol?
 
-\item It would be interesting to investigate the connection between the model of Rational Proofs and the work on Computational Decision Theory in  \cite{halpern2011don}. In particular it would be interesting to look at realistic cost models that could affect the choice of strategy by the prover particularly in the sequentically composable model. 
+\item It would be interesting to investigate the connection between the model of Rational Proofs and the work on Computational Decision Theory in  \cite{halpern2011don}. In particular it would be interesting to look at realistic cost models that could affect the choice of strategy by the prover particularly in the sequentially composable model. 
 \end{itemize}
 
 

@@ -1,0 +1,70 @@
+% Includes: "crypto" extensions (observation on our protocol and on the PCP one), "impossibility" results for NP, composition thm, RPs for randomized computation.
+
+\section{A composition theorem for rational proofs}
+
+% Description of the composition theorem here
+
+\section{Some general results on Rational Proofs}
+
+\subsection{On Rational Arguments and cryptography}
+
+\textbf{ TODO:Give definition of rational argument.}
+
+\textbf{Lemma: }if something is a rational proof when V has oracle access to a certain string of length S then if CRHF exist there is a rational argument for the same language when V does not have that oracle access and the communication complexity is increased by polylog(k,n) (as well as verification complexity) % Remember the security parameter.
+
+\textbf{Corollary: }if CRHF exist then P has a rational argument with 1 round (use lemma above on the PCP-like construction by Azar and Micali)
+
+\textbf{Theorem: }if CRHF exist  then there is a rational argument for NP with sublinear [...] 
+(The construction uses the idea for 3SAT (sample one clause and check it) and then combines it with the composition theorem)
+
+\textbf{ Corollary: } if CRHF exist then there is a O(1) rational argument for NP with sublinear... [use the theorem above plus the theorem by Rosen et al. to tranform rational proofs in rational arguments. That thm assumes PIR which are implied by CRHF, I believe]
+
+% NOTE: Important: write comparison with Kilian, i.e. ours is a _sublinear_ verification time delegation scheme for NP.
+
+\subsection{Tighter lower bounds for efficient rational proofs for NP}
+
+\textbf{Theorem: } If there exists a rational proof with noticeable reward gap for NP then $\NP \subseteq \bigcup_{k>0}\BPTIME[2^{O(log^k(n))} ]$ 
+
+Proof: Use the technique from Rosen et al. (rational arguments) and show that the complexity of the PTM is the one claimed.
+
+\textbf{NOTE: } Why is it that the results above about arguments (rather than proofs) for NP do not contradict the result above?
+
+\section{Rational Proofs for Randomized Computations}
+
+Goal: A simple approach to extending RPs to randomized computation. We will assume a Common Random String model and that V has Random Access to the string.
+
+The theorems are:
+Let $L \in BPSPACETIME(S(N), poly(n))$. If there are rational proofs for $DSPACETIME(S(n), poly(n))$ then there exists a rational proof for deciding L with the same efficiency parameters (up to a constant).
+
+Implications of the theorem:
+\begin{itemize}
+\item we can do all$ BPSPACE[polylog, poly]$ with a polylog verifier thanks to the protocol we have in the rejected paper. 
+\begin{itemize}
+	\item (Notice that although $BPSPACETIME[polylog, poly] \subseteq NSPACETIME[polylog, poly]$ and for the latter class we already showed rational proofs (in the same paper). \textit{However} those rational proofs are one-sided (see comments from one of the reviewers), whereas this gives us two-sided proofs for BPSPACETIME!)
+\end{itemize}
+\item description We can also do very efficient (polylog everywhere or less) rational proofs for randomized circuits with bounded depth  (RNC).
+\end{itemize}
+
+Main idea of the protocol: 
+\begin{itemize}
+\item P sends V the result of the computation (0 or 1)
+\item P computes poly(n) iterations of M(r;x) using the randomness from the CRS.
+\item V selects one of these iterations at random, i.e. it selects a "chunk" r of randomness from the CRS -- Notice that V does not have to read it at all for now)
+\item P communicates the result of the execution of M(r;x)
+\item V pays P using the BSR (using as a "sample" the result of M(r; x) and as a "alleged distribution" whether P told x is in L or not) [Alon et al. do something like this in a piece in their first paper]
+\end{itemize}
+
+Proof sketch:
+Assume that V has oracle access to M(r;x) (to be precise, to keep efficiency down, assume that V only has to specify the log(n)-sized index of the iteration to tell the oracle which randomness to use).
+Under this assumption the one above is a Rational Proof for L. To finish proof use composition theorem of rational proofs to replace the oracle (notice that we are under the assumptions of the composition theorem because the randomness is public, it's considered part of the input and we have random access to it).
+
+
+\subsection{ How to reduce the length of the CRS }
+
+So far we assumed we had all the "randomness we needed" for all iterations in the CRS.
+A PRG can stretch m ranndom bits to $m^d$ for a constant d. We believe PRGs to be computable in NC0 and we know they can be computable in NC1. We have very efficient rational proofs in both cases.
+Assume a CRS $\sigma$ with length $m = O(n^\rho)$ with$ \rho < 1$ (notice that m has to be superpolylog anyway to support poly repetitions). Then we can let the prover use the PRG to generate the necessary randomness
+from $\sigma$. The protocol above can then be changed by replacing a random access to the CRS to a rational proof to for the j-th bit of the output of the PRG. By the composition thm this should work.
+
+
+

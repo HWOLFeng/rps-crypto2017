@@ -24,6 +24,8 @@ For the case of "real-life" computations, Azar and Micali in \cite{am1} consider
 
 Recent work \cite{ratsumchecks} shows how to obtain Rational Proofs with sublinear verifiers for languages in NC. Recalling that $\L \subseteq \NL \subseteq \NC_2$, one can use the protocol  in \cite{ratsumchecks} to verify a logspace polytime computation (deterministic or nondeterministic) in $O(\log^2 n )$ rounds and $O(\log^2 n )$ verification.
 
+The work by Chen et al. \cite{chen2016rational} focuses on rational proofs with multiple provers and the related class $\MRIP$ of languages decidable by a polynomial verifier interacting with an arbitrary number of provers. Under standard complexity assumptions, $\MRIP$ includes languages not decidable by a verifier interacting only with one prover. The class $\MRIP$ is equivalent to $\EXP^{||\NP}$.
+
 
 \medskip
 \noindent
@@ -67,14 +69,24 @@ As pointed out in \cite{cg15} the problem with the scoring rule approach is that
 \medskip
 \noindent
 {\sc Weak Interactive Proofs.}
-Rational proofs can also be achieved via "weak" interactive proofs, where the prover is caught cheating with non-negligible probability (this is basically the {\em covert adversary} model for multiparty computation introduced in \cite{AL10}.) Indeed for such proofs we can always pay a fixed reward $R$ to the prover unless we catch him cheating in which case we pay $0$. These are rational proofs since obviously the expected reward of the prover is maximized by the honest behavior. Some of the proofs in \cite{am} and the proofs in \cite{cg15} are weak interactive proofs. Those proofs also turn out to be secure in the sequential model of \cite{cg15} (under appropriate assumptions). The protocol in this work is also a weak interactive proof. 
+The definition of rational proofs requires that the expected reward is maximized for the honest prover. This definition can be made stronger (as done explicitly in \cite{ratargs}) and require a that every systematically dishonest prover would incur a polynomial loss (this property is usually described in terms of a \textit{noticeable reward gap}). As discussed above, the elegant device of scoring rules is the basis for most rational proof protocols in literature, some of which achieve noticeable reward gap. Another simple way in which we can obtain this stronger type of rational proof is the following. Imagine having a test where the prover can be caught cheating with "low", but non-negligible probability, e.g. $n^{-k}$ for some $k \in \naturals$.
+We will informally call this test a \textit{weak interactive proof}\footnote{This is basically the {\em covert adversary} model for multiparty computation introduced in \cite{AL10}.}. Indeed for such proofs we can always pay a fixed reward $R$ to the prover unless we catch him cheating in which case we pay $0$. These are rational proofs since obviously the expected reward of the prover is maximized by the honest behavior. Some of the proofs in \cite{am} and the proofs in \cite{cg15} are weak interactive proofs. Those proofs also turn out to be secure in the sequential model of \cite{cg15} (under appropriate assumptions). The protocol in this work is also a weak interactive proof. \textbf{TODO: Fix the previous sentence when other results of the paper have been written down.}
 
 \medskip
 \noindent
-{\sc Comparison.}
-When it comes to sequentially composability the work in \cite{cg15} and this work seem to point out that scoring rule based protocols are inherently insecure and cannot be used. 
+{\sc scoring rules vs weak interactive proofs.}
+Comparing approaches based on scoring rules and weak interactive proofs we will try to answer two questions:
+\textit{(i)} Does one approach systematically lead to more efficient rational proofs (in terms of rounds, communication and verifying complexity) than the other? 
+\textit{(ii)} Is one approach more suitable for sequential composability than the other?
+The discussion that follows is supposed to be informal in nature; finding rigorously formal answers is left as future work.
 
-But even if we consider the "stand-alone" model it is not clear which approach is more powerful. For every language class that admits a scoring rule based protocol we also have a weak interactive proof with similar performance metrics (i.e. number of rounds, verifier efficiency, etc.). Our result in this paper present the first example of a language class for which we have rational proofs based on weak interactive proofs but no example of a scoring rule based protocol exist. So our results seem to suggest that the weak interactive proof approach might be the more powerful technique. 
+Approaching the first question, in the context of "stand-alone" (non sequential) rational proofs it is not clear which approach is more powerful. For every language class that admits a scoring rule based protocol we also have a weak interactive proof with similar performance metrics (i.e. number of rounds, verifier efficiency, etc.). The result in this paper is the first example of a language class for which we have rational proofs based on weak interactive proofs but no example of a scoring rule based protocol exist\footnote{We stress that in this comparison we are interested in protocols with similar efficiency parameters. For example, the work in \cite{am} presents several large complexity classes for which we have rational proofs. However, these protocols require a polynomial prover and do not obtain a noticeable reward gap.} This suggests that the weak interactive proof approach might be the more powerful technique. Since the weak interactive proofs approach can be easily characterized, one could try and prove whether, given a rational proof with certain efficiency parameters, one can construct a weak interactive proof (and therefore a rational proof) with "approximately" the same parameters. This question is left as future work.
+
+On the issue of sequential composability, some rational proofs based on scoring rules (such as Brier's scoring rule) can be proven \textit{not} to be sequentially composable \cite{cg15}.
+This problem might be inherent since, intuitively, scoring rules still pay a substantial reward to incorrect computations. In particular, this makes it hard to achieve sequential composability if a cheating prover can achieve such incorrect computations very efficiently. Such a prover would "save" computational resources and thus may achieve and overall profitable strategy by cheating.
+On the other hand, all the sequentially composable proofs in literature are based on weak interactive proofs (\cite{cg15}, \cite{am1}\footnote{Construction in Theorem $5.1$ shown to be sequentially composable in \cite{cg15}.} and this work).
+An important caveat to keep in mind, however, is that the notion of sequential composability is to some extent flexible and depends
+on the cost model one assumes. % XXX: Maybe say something about the cost model in this work and in the previous one here?
 
 \subsection{Other Related  Work}
 \label{sec:prior}
