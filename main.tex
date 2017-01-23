@@ -1,0 +1,99 @@
+
+\documentclass{llncs}
+\pagestyle{plain}
+% XXX: Page numbering is not working with this either
+
+\usepackage{times}
+\usepackage{changepage}
+\usepackage{complexity}
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage[utf8]{inputenc}
+\usepackage{framed}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\usepackage{accents}
+\usepackage{bm}
+\usepackage[normalem]{ulem}
+%\setlength\titlebox{6.5cm}    % You can expand the title box if you
+% really have to
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\title{Rational Proofs with Costly Computation}
+
+\author{}
+
+\institute{}
+\date{}
+
+\begin{document}
+\maketitle
+\input{mycommands.tex}
+
+%% Shortcuts specific to Composition
+\newcommand{\protOne}{\pi^{L_2}_{1}}
+\newcommand{\protTwo}{\pi_{2}}
+\newcommand{\rewGap}{\Delta}
+\newcommand{\STEP}{\function{STEP}}
+
+\newcommand{\disTransc}{\tilde{\Tau}}
+
+
+% Question: Come rendere l'abstract (e il paper) il piu' Eurocrypt-appetibile possibile?
+% XXX: The abstract should be rewritten
+\begin{abstract}
+This paper presents new protocols for the verification of {\em non-deterministic space-bounded polytime computations} against a rational adversary.
+% NOTE: The following is the main "specific consequence" of the protocol, but should we also mention the general result like in the previous abstract?
+For non-deterministic polytime computations in sublinear space our protocol requires only a deterministic verifier  running in sublinear-time.
+Unlike previous rational protocols in literature, our protocol can be used for repeated delegations when the computation is costly for the prover. % XXX: Citations to be included?
+\end{abstract}
+
+
+% -- BEGIN Old abstract --
+\begin{comment}
+\begin{abstract}
+This paper presents new protocols for the verification of {\em non-deterministic space-bounded polytime computations} against a rational adversary. More specifically consider a language $L \in \NTISP(T(n), S(n))$, i.e. a language recognized by a non-deterministic Turing Machine $M_L$ which runs in time $T(n)$ and space $S(n)$. 
+We construct a protocol where a rational prover can
+convince the verifier that $x \in L$ with the following properties: 
+\begin{itemize}
+\item The verifier runs in time $O(S(n) \log n)$;
+\item The protocol terminates in $O(\log n)$ rounds and communication complexity $O(S(n) \log n)$;
+\item The prover simply runs $M_L(x)$ and stores all the intermediate configurations (i.e. requires space $O(S(n) T(n))$.
+\end{itemize}
+Note that for polytime computations in sublinear space this gives a protocol in which the verifier is sublinear-time. 
+\end{abstract}
+\end{comment}
+% -- END Old abstract --
+
+\section{Introduction}
+\input{intro.tex}
+
+\section{Preliminaries}
+\input{rp.tex}
+
+\section{On designing rational proofs as interactive proofs}
+\input{rps_as_ips.tex}
+
+% Rational Proofs for NL 
+% Are these better than the ones we have already?? (not round complexity-wise)
+\section{Rational Proofs for Nondeterministic Space-Bounded Computations }
+\input{boundedspace.tex}
+
+\section{Sequential Composability of our protocol}
+\input{proof-seq-comp.tex}
+
+\section*{Acknowledgement}
+One of the authors would like to thank Jesper Buus Nielsen for the insightful discussions that inspired this work.
+    
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

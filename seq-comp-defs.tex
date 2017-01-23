@@ -1,0 +1,58 @@
+
+% NOTE: Mostly all from last published paper
+
+Intuitively sequential composability attempts to capture the following intuition: the reward of the honest prover $P$ must always be larger than the total  reward of any prover $\disP$ that invests less computation cost than $P$.
+
+
+It is not trivial to give a definition of sequential composability, since it is not possible to claim the above for {\em any} prover $\disP$ and {\em any} sequence of inputs, because it
+is possible that for a given input $\tilde{x}$, the prover $\disP$ has "hardwired" the correct value $\tilde{y}=f(\tilde{x})$ and can compute it without investing 
+any work. We therefore propose a definition that holds for inputs randomly chosen according to a given probability distribution $\cal D$, and we allow for
+the possibility that the reward of a dishonest prover can be "negligibly" larger than the reward of the honest prover (for example if $\disP$ is lucky and such 
+"hardwired" inputs are selected by $\cal D$).
+
+\noindent
+\begin{definition}[Sequential Rational Proof]
+\label{def:SRP}
+A rational proof $(P,V)$ for a function $f:$ $\bit^n$ $\to$ 
+$\bit^n$ is $(\epsilon, K)$-{\sf sequentially composable} for an input distribution $\cal D$, if for every prover $\disP$, 
+and every sequence of inputs 
+$x,x_1,\ldots,x_k \in {\cal D}$ such that $C(x) \geq \sum_{i=1}^k 
+\tilde{C}(x_i)$ and $k \leq K$ we have that $\sum_{i}\tilde{R}(x_i) - R \leq \epsilon$.
+\end{definition}
+
+% Some properties of Sequential Rational Proofs
+\noindent
+A few sufficient conditions for sequential composability follow.
+
+\begin{lemma}
+\label{lemma:cost-rew-ratios}
+% Rew ratio ineq. implies SRP
+Let $(P,V)$ be a rational proof.
+If for every input $x$  it holds that $R(x)=R$ and  $C(x)=C$ for constants 
+$R \mbox{ and } C$, and the 
+following inequality holds for every 
+$\disP\neq 
+P$ and input $x\in {\cal D}$:
+\[ \frac{\tilde{R}(x)}{R} \leq \frac{\tilde{C}(x)}{C} + \epsilon\]
+then $(P,V)$ is $(KR\epsilon, K)$-sequentially composable for $\cal D$
+\end{lemma}
+
+\begin{corollary}
+\label{cor:prob}
+Let $(P,V)$ and $\rew$ be respectively an interactive proof and a reward 
+function as in 
+Definition \ref{def:RP}; if $\rew$ can only assume the values $0$ and $R$ for 
+some constant $R$, let $\pDisR = \Pr[\rew((\disP,V)(x)) = R]$. If for $x \in {\cal D}$
+$$  \pDisR \leq \frac{\tilde{C}(x)}{C} + \epsilon $$
+then $(P,V)$ is $(KR\epsilon, K)$-sequentially composable for $\cal D$. 
+% If rew can be only R or 0 then the sufficient condition is on the probability
+\end{corollary}
+
+
+\subsection{A weaker form of sequential composability}
+
+
+The definition of sequential composability presented above aims at modeling a prover that works under \emph{a constrained budget}. In this case we want to ensure that acting as the honest prover would be the most profitable strategy.
+In other scenarios, however, we may assume the prover having an \emph{unlimited budget}. For example, in the case of volunteering computation we each volunteering client's cost can be expressed by time/electricity with no "cap". Such a client would be looking for the most efficient way to use its resources for \emph{each delegated problem}, rather than for each allocation of the honest cost $C$.
+To model this scenario we can consider a simpler definition of sequential composability where we require the honest prover to be maximizing not only reward but utility, defined as reward minus cost. 
+Such a definition would be a weaker form of sequential composability as defined above: Definition \ref{def:SRP} would imply the notion sketched here. In the remainder of this work we would focus only on the stronger definition of sequential composability for provers with budget constraints.

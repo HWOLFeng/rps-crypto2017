@@ -1,0 +1,58 @@
+
+\subsection{Assumptions on Prover and cost model}
+
+% Some introduction here on "making a transition" vs guessing
+
+% NOTE: "Being function of x" means that the prover is able to see the input
+A (non-adaptive) prover's strategy on input $x$ can be represented by a string $s$, function of $x$, of length $N-1$ \footnote{We can assume the number of steps is fixed by assuming the computation is carried out by an oblivious TM.}.
+We assume that each of the symbols $s_i$ is such that $s_i \in \{ \tau, \gamma \}$. Informally $\tau$ represents a transition the prover computed and $\gamma$ a "guessing" operation.
+The cost of a prover using strategy $s$ on input $x$ is:
+$$ Cost(s) = |\{ i : s_i = \tau \}| $$
+
+We now need to have a connection on how computing more or fewer transitions helps a prover gain the full reward. 
+To do this, we will make assumptions on how the probability of providing the correct configuration is affected by the transitions.
+Let $C_i$ be the correct $i$-th configuration for the computation, i.e.  the configuration as computed by the honest prover (represented by a string of only $\tau$-s). Given an arbitrary prover $\tilde{P}$ we define the configuration $\tilde{C}_i$ as the configuration provided by $\tilde{P}$ when asked by the prover.
+\newcommand{\pCorrConf}{\tilde{q}}
+\newcommand{\pGuessing}{\epsilon_g}
+Let $\pCorrConf_i$ be defined as $\Pr[\tilde{C}_i = C_i]$.
+We assume that:
+\begin{itemize}
+\item $\pCorrConf_0 = 1$; any prover will report the correct input configuration (it would be irrational to do otherwise).
+\item For $1 \leq i \leq T$:
+\[
+    \pCorrConf_i = \left\{\begin{array}{lr}
+        \pGuessing, & \text{if } s_i = \gamma \\
+        \pCorrConf_{i-1}, & \text{if } s_i = \tau 
+        \end{array}
+  \]
+\end{itemize}
+
+The assumptions above may not hold for any distribution of inputs. Thus the following definition:
+\begin{definition}
+Let $\mathcal{D}$ be an input distribution and $\epsilon_g > 0$ a real number. We say the $\epsilon_g$-\emph{Hardness of State Guessing Assumption} holds for $\mathcal{D}$ if for every $s$ the probabilities $q_i$ of a prover reporting the right configuration satisfies the equality above.
+\end{definition}
+
+\subsection{Proof of Sequential Composability}
+
+
+% XXX: Under which distribution??
+\begin{theorem}
+Let $\mathcal{D}$ be a distribution for which it holds the $\epsilon_g$-Hardness of State Guessing Assumption. Under the cost model above, the protocol of Section  \ref{sec:protocol} is a ($KR\epsilon$, K)-sequentially composable rational proof under $\mathcal{D}$ for any $K \in \mathbb{N}, R \in \mathbb{R}_{\leq 0}$ where $\epsilon = T\epsilon_g(1 - \frac{1}{T})$.
+\end{theorem}
+\begin{proof}
+% XXX: Fix proof and theorem statement accounting  for: (1) distribution; (2) R [see Corollary 1 statement from cg15]
+
+Let $\disP$ be a prover which choose to perform $t$ transitions.
+Let $T$ be the cost for the honest prover.
+
+Observe that $\pDisR$ is the probability that $V$ makes the final check on one of the transitions correctly computed by $\disP$. An upper bound on the probability is:
+$$ \pDisR \leq \frac{t + (T-t-1)\epsilon_g}{T}$$
+
+We can use the sufficient condition in Corollary $1$ from \cite{cg15}.
+It suffices to show that 
+$$\pDisR \leq \frac{t}{T} + \epsilon$$
+To show this, we can use the observation above and show that:
+$$ \frac{t + (T-t-1)\epsilon_g}{T}  \leq \frac{t}{T} + T\epsilon_g(1 - \frac{1}{T}) $$
+
+Since the inequality above always holds, the proof is complete.
+\end{proof}

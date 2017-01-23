@@ -1,0 +1,68 @@
+\subsection{Rational Proofs}
+
+% XXX: Do we need 
+In the following we will adopt a "concrete-security" version of the "asymptotic" definitions and theorems in \cite{am1,ratargs}. We assume the reader is familiar with the notion of interactive proofs \cite{gmr}. 
+
+\noindent
+\begin{definition}[Rational Proof]
+\label{def:RP-delta}
+\label{def:RP}
+A function $f:$ $\bit^n$ $\to$ $\bit^n$ admits a rational proof if there exists an interactive proof $(P,V)$ and a randomized reward function
+$\rew : \bits \to \posreals$ such that
+
+\begin{enumerate}
+\item For any input $x \in 
+\bit^n$, $\Pr[\out((P,V)(x)) = f(x)] = 1.$
+
+\item For every prover $\disP$, and for any input $x \in 
+\bit^n$ there exists a $\delta_{\disP}(x) \geq 0$ such that 
+$ \expRewProtDis + \delta_{\disP}(x) \leq \expRewProtHon. $
+\end{enumerate}
+The expectations and the probabilities are taken over the random coins of the prover and verifier.
+\end{definition} 
+
+
+\medskip
+\noindent
+Let $\epsilon_{\disP} = \Pr[\out((P,V)(x)) \neq f(x)]$. 
+Following \cite{ratargs} we define the {\sf reward gap} as 
+\[ \Delta(x) = min_{P^* : \epsilon_{P^*}=1}[\delta_{P^*}(x)]  \]
+i.e. the minimum reward gap over the provers that always report the incorrect value. 
+It is easy to see that for arbitrary prover $\disP$ we have $\delta_{\disP}(x) \geq 
+\epsilon_{\disP} \cdot \Delta(x)$. Therefore it suffices to prove that a protocol has 
+a strictly positive reward gap $\Delta(x)$ for all $x$. 
+
+
+\begin{myrem}
+\label{rem:asy}
+{\em If we are interested in an asymptotic treatment, it is important to notice that as long as $\Delta(x) \geq 1/{\sf poly}(|x|)$ then it is possible to keep a polynomial reward budget, and maximize the honest prover profit against all provers who cheat with a substantial probability $\epsilon_{\disP} \geq 1/{\sf poly'}(|x|)$.}
+\end{myrem}
+
+\begin{definition}[\cite{am1,ratargs}]
+The class $\DRMA[r, c, T]$ (Decisional Rational Merlin Arthur)
+is the class of boolean functions $f : \bits \to \bit$ admitting a rational proof $\Pi = (P,V, \rew)$ s.t. on input $x$:
+\begin{itemize}
+    \item $\Pi$ terminates in $r(|x|)$ rounds;
+    \item The communication complexity of $P$ is $c(|x|)$;
+    \item The running time of $V$ is $T(|x|)$;
+    \item $\Pi$ has noticeable reward gap.
+\end{itemize}
+\end{definition}
+
+
+\begin{comment}
+A composition theorem (in its weak version: for yes/no Rational Proofs):
+\begin{theorem}
+Let $\protOne = (P_1, V_1^{L_2})$ be a (yes/no) rational proof for language $L_1$ with noticeable reward gap and let $V^{L_2}$ have oracle access to language $L_2$ with at most $O(1)$ queries.
+Let $\protTwo (P_2, V_2)$ be a (yes/no) rational proof for $L_2$ with noticeable reward gap.
+Then there exists a (yes/no) rational proof $\pi$ for $L_1$ with noticeable reward gap.
+Moreover if $\protOne$ and $\protTwo$ have round, communication and verification complexity respectively $r_1(n), cc_1(n), T_1(n)$  and $r_2(n), cc_2(n), T_2(n)$ then language $L_1 \in DRMA[r_1(n) + O(r_2(n)), cc_1(n) + O(cc_2(n)), T_1(n) + O(T_2(n))]$
+\end{theorem}
+\end{comment}
+
+% TODO: Observe that since rational proofs with poly budget without noticeable rew gap "hardly" make sense, we will implicitly consider rational proofs, always rational proofs with noticeable rew. gap.
+
+
+
+\subsection{Sequential Composability}
+\input{seq-comp-defs.tex}
