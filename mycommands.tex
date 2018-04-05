@@ -11,7 +11,6 @@
 %\newtheorem{mytheorem}{Theorem}
 %\newtheorem{mycorollary}{Corollary}
 
-
 \newtheorem{myrem}{Remark}
 
 % New complexity classes
@@ -26,7 +25,6 @@
 % Rational Proofs
 %\newcommand{\A}{Arthur }
 %\newcommand{\M}{Merlin }
-
 
 \newcommand{\claimedy}{\tilde{y}}
 \newcommand{\posreals}{\reals_{\geq 0}}
@@ -55,6 +53,8 @@
 %\newcommand{\reward}{\function{reward}}
 %\newcommand{\log}{\function{log}}
 
+\newcommand{\invPoly}{\frac{1}{\poly}}
+
 \newcommand{\expRewProtDis}{\expectation[\rew((\disP,V)(x))]}
 \newcommand{\expRewProtDisMany}{\expectation[\rew((\disP,V)(\xVec))]}
 \newcommand{\expRewProtHon}{\expectation[\rew((P,V)(x))]}
@@ -67,6 +67,8 @@
 \newcommand{\expProfitProtHon}{\expectation[\profit((P,V)(x))]}
 
 \newcommand{\pDisR}{\tilde{p}_x}
+
+\newcommand{\rnd}{\rho}
 
 \newcommand{\PathCheck}{\function{PathCheck}}
 
@@ -88,6 +90,7 @@
 
 \newcommand{\deltaBfsInv}{\delta_{BFS}(\tilde{C})}
 
+\newcommand{\disR}{\tilde{R}}
 \newcommand{\disRUB}{R'}
 \newcommand{\disCLB}{\cost'}
 
@@ -112,6 +115,7 @@
 
 \newcommand{\naturals}{\mathbb{N}}\label{key}
 \newcommand{\reals}{\mathbb{R}}
+\newcommand{\field}{\mathbb{F}}
 
 % Circuit Family
 \newcommand{\circfam}{\{C_n\}_{n=1}^{\infty}}
@@ -122,3 +126,43 @@
 \makeatletter
 \newcommand{\verbatimfont}[1]{\def\verbatim@font{#1}}%
 \makeatother
+
+\newclass{\BPTISP}{BPTISP}
+\newclass{\BPNC}{BPNC}
+\newclass{\osDRMA}{osDRMA}
+\newclass{\BPRMA}{BPRMA}
+%\newclass{\BPQP}{BPQP}
+\newclass{\Cclass}{C}
+
+\newcommand{\cb}[1]{\colorbox{BurntOrange}{#1}}
+\newcommand{\CN}{\cb{\textbf{[CN]}}}
+\newcommand{\XXX}{\cb{\textbf{[XXX]}}}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+
+
+\newcommand{\DOM}{\function{DOM}}
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\allhonest}{\function{all\_honest}}
+\newcommand{\true}{\function{true}}
+\newcommand{\false}{\function{false}}
+
+\newcommand{\Enc}{\function{Enc}}
+\newcommand{\pk}{\function{pk}}
+\newcommand{\sk}{\function{sk}}
+
+%% Shortcuts specific to Composition
+\newcommand{\protOne}{\pi^{f_2}_{1}}
+\newcommand{\protTwo}{\pi_{2}}
+\newcommand{\rewGap}{\Delta}
+\newcommand{\STEP}{STEP}
+
+\newcommand{\disTransc}{\tilde{\Tau}}
+
+
